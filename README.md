@@ -1,4 +1,4 @@
-# Kaaliteeri
+# Kaali Teeri
 
 A score tracker for the Indian Gujarati card game Kaali Teeri. Built with Next.js, React, and Tailwind CSS.
 
