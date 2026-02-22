@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Player } from "@/types/game";
 import ScoresTable from "./ScoresTable";
 
@@ -10,14 +10,18 @@ interface ScoresModalProps {
 }
 
 export default function ScoresModal({ players, onClose }: ScoresModalProps) {
-	// Close on Escape key
+	// Keep a ref to always call the latest onClose without re-registering the listener
+	const onCloseRef = useRef(onClose);
+	onCloseRef.current = onClose;
+
+	// Close on Escape key — listener registered once
 	useEffect(() => {
 		function handleKeyDown(e: KeyboardEvent) {
-			if (e.key === "Escape") onClose();
+			if (e.key === "Escape") onCloseRef.current();
 		}
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [onClose]);
+	}, []);
 
 	return (
 		<div

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PlayerInput from "@/components/PlayerInput";
 import { useGame } from "@/context/GameContext";
 
@@ -11,8 +11,6 @@ interface PlayerEntry {
 	id: number;
 	name: string;
 }
-
-let nextId = INITIAL_PLAYER_COUNT + 1;
 
 function makeInitialPlayers(): PlayerEntry[] {
 	return Array.from({ length: INITIAL_PLAYER_COUNT }, (_, i) => ({
@@ -24,6 +22,7 @@ function makeInitialPlayers(): PlayerEntry[] {
 export default function SetupGamePage() {
 	const router = useRouter();
 	const { initGame } = useGame();
+	const nextId = useRef(INITIAL_PLAYER_COUNT + 1);
 
 	const [players, setPlayers] = useState<PlayerEntry[]>(makeInitialPlayers);
 	const [error, setError] = useState<string | null>(null);
@@ -40,7 +39,7 @@ export default function SetupGamePage() {
 	}
 
 	function handleAddPlayer() {
-		setPlayers((prev) => [...prev, { id: nextId++, name: "" }]);
+		setPlayers((prev) => [...prev, { id: nextId.current++, name: "" }]);
 	}
 
 	function handleSubmit(e: React.FormEvent) {

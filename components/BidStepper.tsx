@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 interface BidStepperProps {
 	value: number;
 	onChange: (value: number) => void;
@@ -6,7 +8,7 @@ interface BidStepperProps {
 	max?: number;
 }
 
-export default function BidStepper({
+function BidStepper({
 	value,
 	onChange,
 	step = 5,
@@ -46,3 +48,5 @@ export default function BidStepper({
 		</div>
 	);
 }
+
+export default memo(BidStepper);

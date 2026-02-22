@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import BidStepper from "@/components/BidStepper";
 import ScoresModal from "@/components/ScoresModal";
 import { useGame } from "@/context/GameContext";
@@ -38,6 +38,14 @@ export default function GameRoundPage() {
 			setPartners([firstId]);
 		}
 	}, [gameState, bidderId]);
+
+	// Stable callbacks for memoized children
+	const handleBidChange = useCallback((v: number) => {
+		setBid(v);
+		setFormError(null);
+	}, []);
+
+	const handleCloseScores = useCallback(() => setShowScores(false), []);
 
 	if (!gameState) return null;
 
@@ -164,13 +172,7 @@ export default function GameRoundPage() {
 					<p className="text-stone-400 text-xs font-semibold uppercase tracking-widest mb-4">
 						Bid Amount
 					</p>
-					<BidStepper
-						value={bid}
-						onChange={(v) => {
-							setBid(v);
-							setFormError(null);
-						}}
-					/>
+					<BidStepper value={bid} onChange={handleBidChange} />
 				</section>
 
 				{/* Partners */}
@@ -290,7 +292,7 @@ export default function GameRoundPage() {
 			{showScores && (
 				<ScoresModal
 					players={getSortedPlayers()}
-					onClose={() => setShowScores(false)}
+					onClose={handleCloseScores}
 				/>
 			)}
 		</main>

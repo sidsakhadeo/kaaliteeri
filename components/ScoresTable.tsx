@@ -1,10 +1,11 @@
+import { memo } from "react";
 import type { Player } from "@/types/game";
 
 interface ScoresTableProps {
   players: Player[]; // expected to be pre-sorted
 }
 
-export default function ScoresTable({ players }: ScoresTableProps) {
+function ScoresTable({ players }: ScoresTableProps) {
   return (
     <div className="space-y-2">
       {players.map((player, index) => (
@@ -45,3 +46,5 @@ export default function ScoresTable({ players }: ScoresTableProps) {
     </div>
   );
 }
+
+export default memo(ScoresTable);
